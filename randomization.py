@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 import openpyxl
 ##  Parsing CSV
-etoro_raw = pd.read_csv("etoro_data.csv")
+etoro_raw = pd.read_csv("preselected_stocklist.csv")
 stock_list = etoro_raw["Ticker"].values.tolist()
 
 ##  random stock selection and group allocation
