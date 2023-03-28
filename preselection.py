@@ -31,8 +31,6 @@ print(final_df)
 
 final_df.to_csv('preselected_stocklist.csv', index=True)
 
-# def to_excel(num):
-#     df_analysis.to_excel(r'/Users/sebastianhaidinger/code/Personal_Projects/Malkiel_Investment',
-#                          index=True, sheet_name="Analysis" + num)
-
-# to_excel(str(1))
+def to_excel(num):
+    df_analysis.to_excel(r'/Users/sebastianhaidinger/code/Personal_Projects/Malkiel_Investment',
+    index=True, sheet_name="Analysis" + num)
