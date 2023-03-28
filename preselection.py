@@ -1,13 +1,12 @@
 import yfinance as yf
 import pandas as pd
 import numpy as np
-import openpyxl
+# import openpyxl
 ##  Parsing CSV
 etoro_raw = pd.read_csv("etoro_data.csv")
 stock_list = etoro_raw["Ticker"].values.tolist()
-test_list = stock_list[500:550]
+test_list = stock_list[400:550]
 test_list.insert(0,"SPY")
-print(test_list)
 
 ##  Define Risk free Rate
 risk_f = 0.0346
