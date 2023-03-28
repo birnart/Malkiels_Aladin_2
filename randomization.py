@@ -1,8 +1,8 @@
 import pandas as pd
 import numpy as np
 ##  Parsing CSV
-etoro_raw = pd.read_csv("preselected_stocklist.csv")
-stock_list = etoro_raw["Ticker"].values.tolist()
+preselected = pd.read_csv("preselected_stocklist.csv")
+stock_list = preselected["Ticker"].values.tolist()
 
 ##  random stock selection and group allocation
 stock_num = int(input("How many stocks does every group need?: "))

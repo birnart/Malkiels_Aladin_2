@@ -1,12 +1,14 @@
+##  ---------------------------------------
 ##  LARGE/SLOW FILE -- RUN MAX ONCE A MONTH
+##  ---------------------------------------
 import yfinance as yf
 import pandas as pd
 import numpy as np
 ##  Parsing CSV
 etoro_raw = pd.read_csv("etoro_data.csv")
 stock_list = etoro_raw["Ticker"].values.tolist()
-# test_list = stock_list[400:550]
-# test_list.insert(0,"SPY")
+stock_list.insert(0, "SPY")
+
 
 ##  Define Risk free Rate
 risk_f = 0.0346
@@ -30,6 +32,3 @@ final_df = df_analysis[df_analysis["CAPM"] > capm["SPY"]]
 ##  exporting selected stocks into new CSV
 final_df.to_csv('preselected_stocklist.csv', index=True)
 
-# def to_excel(num):
-#     df_analysis.to_excel(r'/Users/sebastianhaidinger/code/Personal_Projects/Malkiel_Investment',
-#     index=True, sheet_name="Analysis" + num)
