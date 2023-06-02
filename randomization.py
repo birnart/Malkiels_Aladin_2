@@ -13,4 +13,5 @@ for k in range(1,5):
     print("Group ", k, "stocks are: ", group_picks)
     all_picks.extend(group_picks)
 
+
 ##  -- exporting all picks into new CSV to pass on into detailled analysis?

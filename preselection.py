@@ -14,8 +14,12 @@ stock_list.insert(0, "SPY")
 risk_f = 0.0346
 
 ##  downloading and calculating Stock and Market returns, volatility, beta, capm etc...
-dfh = yf.download(stock_list, period="5y", interval="1wk",
-                  ignore_tz=True, prepost=False)["Close"]
+dfh = yf.download(stock_list, 
+                period="5y", 
+                interval="1wk", 
+                ignore_tz=True, 
+                prepost=False)["Close"]
+                
 returns = dfh.pct_change()
 aar_arith = returns.mean()*52
 std_deviation = returns.std()
@@ -25,10 +29,9 @@ beta = covariance["SPY"]/returns["SPY"].var()
 capm = risk_f + beta * (returns["SPY"].mean() - risk_f)
 ##  creating comprehensive data frame of anaylsed stocks
 df_analysis = pd.DataFrame({"Ticker": stock_list, "CAPM": capm, "Beta": beta, "Std_deviation": std_deviation,
-                          "Sharpe Arith": sharpe_arith, "AAR Arith": aar_arith})
+                          "Sharpe_Arith": sharpe_arith, "AAR_Arith": aar_arith})
 ##  filtering for stocks that outperform market histrically -- ADD VOLATILITY AND RETHINK CAPM MIN
 final_df = df_analysis[df_analysis["CAPM"] > capm["SPY"]]
 
 ##  exporting selected stocks into new CSV
 final_df.to_csv('preselected_stocklist.csv', index=True)
-
