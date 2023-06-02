@@ -1,26 +1,21 @@
 # import pandas as pd
 # from functools import partial
-import requests
 import pandas as pd
-
-url = 'https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY&symbol=IBM&apikey=demo'
-r = requests.get(url)
-data = r.json()
+from dfh_cleaning import df
 from discrimnators import Discriminators
+
+df.dropna()
+
 discriminators = Discriminators()
-
-
-df = pd.DataFrame(data)
-
 
 # Create a list of tuples containing the functions and their additional arguments
 args = {
-    discriminators.volatility: 23,
-    discriminators.aar_arithmetic: 4,
-    discriminators.sharpe_arithimetic: 5,
+    discriminators.volatility: 0.02,
+    discriminators.aar_arithmetic: 1,
+    discriminators.sharpe_arithimetic: 1,
 }
-filtered_df = df[df.apply(lambda row: all(
-    d(row, args[d]) for d in args), axis=1)]
+
+filtered_df = df.from_dict(all(args), orient = "index")
 
 
 
@@ -49,3 +44,33 @@ print(filtered_df)
 #       i = len(selection)
 
 
+
+
+
+
+
+
+
+
+
+                               # #
+                              ## ##
+                             #######
+                            #########
+                             #######
+                             #######
+                             #######
+                             #######
+                             #######
+                             #######
+                             #######
+                             #######
+                             #######
+                             #######
+                    #####    #######    #####
+                   #######             #######
+                  #########           #########
+                 ###########         ###########
+                  #########           #########
+                   #######             #######
+                    #####               #####
