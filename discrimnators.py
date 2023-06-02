@@ -1,5 +1,4 @@
 class Discriminators():
-  risk_f = 12 ## whatever this is
 
   def volatility(self, df, max_volat):
     bool(df["returns"].std() < max_volat)
