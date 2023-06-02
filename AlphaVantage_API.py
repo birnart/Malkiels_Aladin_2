@@ -15,18 +15,18 @@ for n,i in enumerate(stock_list):
     data = r.json()
     try:
         weekly_data = data["Weekly Time Series"]
-        df = pd.DataFrame.from_dict(weekly_data, orient='index')
-        df_new = df["4. close"]
+        dfk = pd.DataFrame.from_dict(weekly_data, orient='index')
+        df_new = dfk["4. close"]
         series_list.append(df_new)
     except:
         n+1
 
 ## Initialize the DataFrame 
-dfh = pd.DataFrame()
+df = pd.DataFrame()
 
 ## Add the series to the data frame 
 for name, series in zip(stock_list, series_list):
-    dfh[name] = series
+    df[name] = series
 
-print(dfh)    
+print(df)    
 
