@@ -7,7 +7,8 @@ import { deleteMethod } from "../Django API/delete";
 export var i = [];
 var j = []
 var k;
-var uniqueArray = []
+var uniqueTitle = []
+var uniqueNb = []
 
 // Gives all the filters possible
 var options = [
@@ -20,7 +21,7 @@ var options = [
 async function postMethod() {
   console.log(i);
   const formData = new FormData();
-  formData.append('title', `${uniqueArray}` );
+  formData.append('title', `${uniqueTitle}` );
   formData.append('description', `${i}`);
   
   try {
@@ -47,8 +48,8 @@ function DropdownMenu({ inputId }) {
 
   if(selectedValue !=='Select an option' ){
     j.push(selectedValue)
-    uniqueArray = Array.from(new Set(j));
-    console.log(uniqueArray);
+    uniqueTitle = Array.from(new Set(j));
+    console.log(uniqueTitle);
     
   }
   
@@ -86,6 +87,10 @@ const Home = () => {
   const [filterCount, setFilterCount] = useState(0);
   const [todos, setTodos] = useState([]);
 
+  const handleReload = () => {
+    window.location.reload();
+  };
+
   //Function to add filters menu 
   const handleAddFiltersClick = () => {
     setFilterCount((prevCount) => prevCount + 1);
@@ -99,6 +104,8 @@ const Home = () => {
       const inputValue = document.getElementById(`myNumberInput-${index}`).value;
       console.log(`Input ${index + 1} value:`, inputValue);
       i.push(inputValue)
+      uniqueNb = Array.from(new Set(i));
+      console.log(uniqueNb);
       console.log(i);
     
       
@@ -130,7 +137,7 @@ const Home = () => {
         <DropdownMenu key={index} inputId={`myNumberInput-${index}`} />
       ))}
       
-      <button onClick={()=>{handleLogValues();postMethod();}}>Submit</button>
+      <button onClick={()=>{handleLogValues();postMethod();handleReload()}}>Submit</button>
         <button onClick={fetchTodoList}>List</button>
         <textarea id='delete' ></textarea>
           <button onClick={deleteMethod}>Delete</button>
