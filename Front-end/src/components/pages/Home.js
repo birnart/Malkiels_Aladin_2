@@ -1,6 +1,4 @@
 import React, { useEffect, useState, useRef } from 'react';
-//import { postMethod } from "../Django API/post";
-import { fetchTodoList } from "../Django API/get";
 import { deleteMethod } from "../Django API/delete";
 
 
@@ -19,7 +17,7 @@ var options = [
 
 // Function to post the filters and the value to the API 
 async function postMethod() {
-  console.log(i);
+  
   const formData = new FormData();
   formData.append('title', `${uniqueTitle}` );
   formData.append('description', `${i}`);
@@ -28,17 +26,36 @@ async function postMethod() {
     const response = await fetch('http://localhost:8000/api/', {
       method: 'POST',
       body: formData
-    });
+    })
 
     if (response.ok) {
       const data = await response.json();
-      console.log(data.id);
+      const xValue = data.x;
+      console.log('Value of x:', xValue); 
+      
     } else {
       console.log('Error:', response.statusText);
     }
   } catch (error) {
     console.log('Error:', error.message);
   }
+}
+
+async function fetchTodoList() {
+  try {
+    const response = await fetch('http://localhost:8000/api/back');
+    const data = await response.json();
+    console.log(data);
+    return data;
+  } catch (error) {
+    console.log('Error:', error.message);
+  }
+}
+
+//Post then let the values get treated and get the values back
+async function postGet(){
+  await postMethod()
+  await fetchTodoList()
 }
 
 // Creates a dropdown menu so you can select which filter you want
@@ -49,7 +66,7 @@ function DropdownMenu({ inputId }) {
   if(selectedValue !=='Select an option' ){
     j.push(selectedValue)
     uniqueTitle = Array.from(new Set(j));
-    console.log(uniqueTitle);
+   
     
   }
   
@@ -95,18 +112,15 @@ const Home = () => {
   const handleAddFiltersClick = () => {
     setFilterCount((prevCount) => prevCount + 1);
     k=filterCount
-    console.log(k);
+    
   };
 
   //Function to get each value 
   const handleLogValues = () => {
     for (let index = 0; index < filterCount; index++) {
       const inputValue = document.getElementById(`myNumberInput-${index}`).value;
-      console.log(`Input ${index + 1} value:`, inputValue);
       i.push(inputValue)
       uniqueNb = Array.from(new Set(i));
-      console.log(uniqueNb);
-      console.log(i);
     
       
     }
@@ -137,7 +151,7 @@ const Home = () => {
         <DropdownMenu key={index} inputId={`myNumberInput-${index}`} />
       ))}
       
-      <button onClick={()=>{handleLogValues();postMethod();handleReload()}}>Submit</button>
+      <button onClick={()=>{handleLogValues();postGet();handleReload()}}>Submit</button>
         <button onClick={fetchTodoList}>List</button>
         <textarea id='delete' ></textarea>
           <button onClick={deleteMethod}>Delete</button>
