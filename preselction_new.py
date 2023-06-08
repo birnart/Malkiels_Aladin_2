@@ -1,27 +1,32 @@
 # import pandas as pd
 # from functools import partial
 import pandas as pd
-from dfh_cleaning import df
+from AlphaVantage_API import df
 from discrimnators import Discriminators
 
-df.dropna()
 
 discriminators = Discriminators()
 
 # Create a list of tuples containing the functions and their additional arguments
 args = {
-    discriminators.volatility: 0.02,
-    discriminators.aar_arithmetic: 1,
-    discriminators.sharpe_arithimetic: 1,
+    discriminators.volatility: 1,
+    discriminators.aar_arithmetic: 5,
+    discriminators.sharpe_arithimetic: 5,
 }
 
-filtered_df = df.from_dict(all(args), orient = "index")
+filtered_df = []
+for i in df:
+    if all(args):
+        filtered_df.append(i)
+        print(i)
+    if len(filtered_df) > 20:
+        break
+
 
 
 
 
 # Print the filtered data frame
-print(filtered_df)
 
 # selection = []
 # # Iterate through the functions and apply them to the data frame
