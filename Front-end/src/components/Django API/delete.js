@@ -1,5 +1,3 @@
-
-
 var key;
 
 export async function deleteMethod() {

@@ -5,11 +5,28 @@ from django.dispatch import Signal
 from rest_framework import generics
 from .models import Todo , Back
 from .serializers import TodoSerializer, BackSerializer
+from rest_framework import generics
+from .models import Back
+from .serializers import BackSerializer
+from rest_framework.response import Response
+from rest_framework import status
 # Create your views here.
 
 filter = []
 number = []
 id = []
+
+class DeleteDataById(generics.GenericAPIView):
+    def delete(self, request, pk):
+        try:
+            # Try to retrieve the item by its ID
+            item = Back.objects.get(pk=pk)
+            item.delete()
+            return Response({'message': f'Data with ID {pk} deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
+        except Back.DoesNotExist:
+            return Response({'message': f'Data with ID {pk} not found'}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({'message': 'An error occurred while deleting data'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 #Function to delete with an ID 
 def delete(todo_id):
@@ -32,13 +49,14 @@ def my_function(sender, request, **kwargs):
         number.append(desc)
         filter.append(title)
         
+    
     if len(ids) > 0:
         for todo_id in ids:
             delete(todo_id)
         print("Deleted")
-
     # Your logic here
 
+    
     #POST the new numbers to get them back in the front end 
     print("POST request received")
     url = "http://localhost:8000/api/back/"
@@ -47,6 +65,8 @@ def my_function(sender, request, **kwargs):
         "description": "Sent back"
     }
     response = requests.post(url, data=data)
+
+
 
     if response.status_code == 200:
         # POST request succeeded

@@ -1,12 +1,19 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { deleteMethod } from "../Django API/delete";
+import axios from "axios";
 
 
 export var i = [];
-var j = []
+
+
+//Function to render the components 
+const Home = () => {
+
+ var j = []
 var k;
 var uniqueTitle = []
 var uniqueNb = []
+
 
 // Gives all the filters possible
 var options = [
@@ -46,16 +53,33 @@ async function fetchTodoList() {
     const response = await fetch('http://localhost:8000/api/back');
     const data = await response.json();
     console.log(data);
-    return data;
+    setAnswer(data[0])
+    if (data.length>0){
+      let idToDelete = data[data.length - 1].id;
+      // Send a DELETE request using axios
+      axios.delete(`http://localhost:8000/api/back/delete/${idToDelete}/`)
+      .then(response => {
+        console.log('Delete successful:', response.data);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+      
+    };
+
+    return answer
   } catch (error) {
     console.log('Error:', error.message);
   }
 }
 
+
+
 //Post then let the values get treated and get the values back
 async function postGet(){
   await postMethod()
   await fetchTodoList()
+  
 }
 
 // Creates a dropdown menu so you can select which filter you want
@@ -94,19 +118,16 @@ function DropdownMenu({ inputId }) {
         step="1"
         ref={inputValueRef}
       />
+      
     </div>
   );
 }
 
-//Function to render the components 
-const Home = () => {
-
   const [filterCount, setFilterCount] = useState(0);
   const [todos, setTodos] = useState([]);
+  const [answer, setAnswer] = useState(null);
 
-  const handleReload = () => {
-    window.location.reload();
-  };
+
 
   //Function to add filters menu 
   const handleAddFiltersClick = () => {
@@ -121,26 +142,11 @@ const Home = () => {
       const inputValue = document.getElementById(`myNumberInput-${index}`).value;
       i.push(inputValue)
       uniqueNb = Array.from(new Set(i));
-    
-      
     }
   };
 
  
-  //Used to update the new input and put it on the website. Not useful because it wont be displayed
-  useEffect(() => {
-    async function fetchTodos() {
-      try {
-        const res = await fetch('http://127.0.0.1:8000/api/');
-        const todosData = await res.json();
-        setTodos(todosData);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-
-    fetchTodos();
-  }, []);
+  
 
   return (
     <div>
@@ -151,7 +157,7 @@ const Home = () => {
         <DropdownMenu key={index} inputId={`myNumberInput-${index}`} />
       ))}
       
-      <button onClick={()=>{handleLogValues();postGet();handleReload()}}>Submit</button>
+      <button onClick={()=>{handleLogValues();postGet()}}>Submit</button>
         <button onClick={fetchTodoList}>List</button>
         <textarea id='delete' ></textarea>
           <button onClick={deleteMethod}>Delete</button>
@@ -163,6 +169,13 @@ const Home = () => {
           </div>
         ))}
       </div>
+      {answer && (
+        <div>
+          <h1>ID: {answer.id}</h1>
+          <p>Number: {answer.number}</p>
+          <p>Description: {answer.description}</p>
+        </div>
+      )}
     </div>
   );
 };
